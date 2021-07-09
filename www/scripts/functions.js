@@ -9,7 +9,7 @@ WebApp._bind("Cordova.deviceready", function() {
 	if(navigator && navigator.connection && navigator.connection.type) {
 		if(navigator.connection.type == Connection.NONE) {
 			WebApp._error('Device is not connected to internet');
-			navigator.notification.alert('No hay conexion a internet.\nRevise su conexion y vuelva a intentarlo.', null, "BilleteraPais", "Cerrar");
+			navigator.notification.alert('No hay conexion a internet.\nRevise su conexion y vuelva a intentarlo.', null, "Cordova Bridge", "Cerrar");
 		} else
 			launch();
 	} else {
@@ -32,14 +32,14 @@ WebApp._bind("body.unload", function(){
 });
 
 function launch() {
-	var url = '/embedded/index.html';
+	var url = 'http://localhost/bridge/';
 		var bind = WebApp._bind('Parser.parsed', function() {
         WebApp.Splashscreen._hide();
         WebApp._unbind('Parser.parsed', bind);
 		var embedded = WebApp.Embedded('container', function(data) {
 			if(data && data.cmd) {// && WebApp.Cordova._checkCmd(data.cmd)) {
 				if(data.cmd == 'Embedded.Initialized') {
-					//WebApp.Splashscreen._hide();
+					WebApp.Splashscreen._hide();
 				} else {
 	                data.result = WebApp.Cordova._call(data.cmd, data.params || []);
 	                WebApp._log('Message result: ' + JSON.stringify(data.result));
